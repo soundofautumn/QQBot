@@ -83,7 +83,7 @@ public class BotDatabaseQuery implements Runnable {
                             //如果符合则转化为long类型
                             long username = Long.parseLong(msgString);
                             //生成sql语句
-                            String sql = "SELECT username,grade FROM users WHERE username= " + msgString;
+                            String sql = "SELECT username,grade FROM users WHERE username= " + username;
                             //连接数据库
                             DBHelper db = null;
                             ResultSet rs = null;
