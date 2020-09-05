@@ -29,7 +29,6 @@ public class Main {
             public ListeningStatus onGroupMessage(GroupMessageEvent event) {
                 String msgString = event.getMessage().contentToString();
 //                System.out.println(msgString);
-                if (event.getGroup().getId() == 915775011L) {//测试群
                     if (msgString.equals("你好")) {
                         event.getGroup().sendMessage("你好!");
                     }
@@ -37,11 +36,9 @@ public class Main {
                         event.getGroup().sendMessage(new At(event.getSender()).plus("干啥?"));
                     }
 
-                } else if (event.getGroup().getId() == 956830867L) {
                     if (msgString.contains("@" + bot.getNick())) {
                         event.getGroup().sendMessage(new At(event.getSender()).plus("干啥?"));
                     }
-                }
 
                 return ListeningStatus.LISTENING;
             }
@@ -50,13 +47,11 @@ public class Main {
             public ListeningStatus onSenderMessage(FriendMessageEvent event) {
                 String msgString = event.getMessage().contentToString();
 
-                if (event.getSender().getId() == 1298528323L) {
                     if (msgString.equals("你好")) {
                         event.getSender().sendMessage("你好!");
                     }else {
                         event.getSender().sendMessage("你好,我是机器人小懿~,请问需要什么帮助吗?");
                     }
-                }
 
 
                 return ListeningStatus.LISTENING;
