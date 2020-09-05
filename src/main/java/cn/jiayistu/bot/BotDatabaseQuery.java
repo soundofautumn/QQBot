@@ -95,13 +95,13 @@ public class BotDatabaseQuery implements Runnable {
                                 sendMessage(event, rs.getString("grade"));
                             } catch (SQLException se) {
                                 se.printStackTrace();
+                                sendMessage(event, "出现未知错误,数据库查询已停止");
                             } finally {
                                 if (rs != null) {
                                     try {
                                         rs.close();
                                     } catch (SQLException se) {
                                         se.printStackTrace();
-                                        sendMessage(event, "出现未知错误,数据库查询已停止");
                                     }
                                 }
                                 if (db != null) {
@@ -160,13 +160,13 @@ public class BotDatabaseQuery implements Runnable {
                                 sendMessage(event, rs.getString("grade"));
                             } catch (SQLException se) {
                                 se.printStackTrace();
+                                sendMessage(event, "出现未知错误,数据库查询已停止");
                             } finally {
                                 if (rs != null) {
                                     try {
                                         rs.close();
                                     } catch (SQLException se) {
                                         se.printStackTrace();
-                                        sendMessage(event, "出现未知错误,数据库查询已停止");
                                     }
                                 }
                                 if (db != null) {
