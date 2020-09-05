@@ -2,12 +2,16 @@ package cn.jiayistu.bot;
 
 import cn.jiayistu.configuration.ReadProperties;
 import kotlin.coroutines.CoroutineContext;
-import net.mamoe.mirai.*;
-import net.mamoe.mirai.event.*;
+import net.mamoe.mirai.Bot;
+import net.mamoe.mirai.BotFactoryJvm;
+import net.mamoe.mirai.event.EventHandler;
+import net.mamoe.mirai.event.Events;
+import net.mamoe.mirai.event.ListeningStatus;
+import net.mamoe.mirai.event.SimpleListenerHost;
 import net.mamoe.mirai.message.FriendMessageEvent;
 import net.mamoe.mirai.message.GroupMessageEvent;
 import net.mamoe.mirai.message.data.At;
-import net.mamoe.mirai.utils.*;
+import net.mamoe.mirai.utils.BotConfiguration;
 import org.jetbrains.annotations.NotNull;
 
 public class Main {
