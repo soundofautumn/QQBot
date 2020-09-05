@@ -1,6 +1,6 @@
 package cn.jiayistu.bot;
 
-import cn.jiayistu.configuration.Configuration;
+import cn.jiayistu.configuration.ReadProperties;
 import cn.jiayistu.database.DBHelper;
 import kotlin.coroutines.CoroutineContext;
 import net.mamoe.mirai.*;
@@ -17,12 +17,12 @@ import java.sql.SQLException;
 
 public class Main {
     public static void main(String[] args) {
-        final long qq = Long.parseLong(Configuration.readConfig("qq", "bot.properties"));
-        final String password = Configuration.readConfig("password", "bot.properties");
+        final long qq = Long.parseLong(ReadProperties.getValue("qq", "bot.properties"));
+        final String password = ReadProperties.getValue("password", "bot.properties");
 
         final Bot bot = BotFactoryJvm.newBot(qq, password, new BotConfiguration() {
             {
-                fileBasedDeviceInfo("conf\\deviceInfo.json");
+                fileBasedDeviceInfo("/deviceInfo.json");
             }
         });
 

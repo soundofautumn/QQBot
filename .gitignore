@@ -1,5 +1,5 @@
 .idea
-conf
+src/main/resources/conf
 target
 test
 img

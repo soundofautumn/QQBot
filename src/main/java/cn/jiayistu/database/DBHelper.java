@@ -1,14 +1,15 @@
 package cn.jiayistu.database;
 
-import cn.jiayistu.configuration.Configuration;
+
+import cn.jiayistu.configuration.ReadProperties;
 
 import java.sql.*;
 
 public class DBHelper {
-    public static final String url = Configuration.readConfig("DB_URL","database.properties");
-    public static final String name = Configuration.readConfig("JDBC_DRIVER","database.properties");
-    public static final String user = Configuration.readConfig("USER", "database.properties");
-    public static final String password = Configuration.readConfig("PASS", "database.properties");
+    public static final String url = ReadProperties.getValue("DB_URL","database.properties");
+    public static final String name = ReadProperties.getValue("JDBC_DRIVER","database.properties");
+    public static final String user =ReadProperties.getValue("USER", "database.properties");
+    public static final String password = ReadProperties.getValue("PASS", "database.properties");
 
     public Connection conn = null;
     public PreparedStatement pst = null;
