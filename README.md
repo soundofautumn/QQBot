@@ -8,5 +8,5 @@
 # jiayistuBot
 这是嘉懿之声下的QQ机器人项目
 
-![嘉懿之声](http://music.jiayistu.cn)
-![学生会主页](http://www.jiayistu.cn)
+![嘉懿之声](music.jiayistu.cn)
+![学生会主页](www.jiayistu.cn)
