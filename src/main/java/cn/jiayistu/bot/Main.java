@@ -13,8 +13,8 @@ import org.jetbrains.annotations.NotNull;
 
 public class Main {
     public static void main(String[] args) {
-        final long qq = Long.parseLong(Configuration.readConfig("qq","bot.properties"));
-        final String password = Configuration.readConfig("password","bot.properties");
+        final long qq = Long.parseLong(Configuration.readConfig("qq", "bot.properties"));
+        final String password = Configuration.readConfig("password", "bot.properties");
 
         final Bot bot = BotFactoryJvm.newBot(qq, password, new BotConfiguration() {
             {
@@ -29,16 +29,12 @@ public class Main {
             public ListeningStatus onGroupMessage(GroupMessageEvent event) {
                 String msgString = event.getMessage().contentToString();
 //                System.out.println(msgString);
-                    if (msgString.equals("你好")) {
-                        event.getGroup().sendMessage("你好!");
-                    }
-                    if (msgString.contains("@" + bot.getNick())) {
-                        event.getGroup().sendMessage(new At(event.getSender()).plus("干啥?"));
-                    }
+                if (msgString.equals("你好")) {
+                    event.getGroup().sendMessage("你好!");
+                } else if (msgString.contains("@" + bot.getNick())) {
+                    event.getGroup().sendMessage(new At(event.getSender()).plus("干啥?"));
+                }
 
-                    if (msgString.contains("@" + bot.getNick())) {
-                        event.getGroup().sendMessage(new At(event.getSender()).plus("干啥?"));
-                    }
 
                 return ListeningStatus.LISTENING;
             }
@@ -47,11 +43,11 @@ public class Main {
             public ListeningStatus onSenderMessage(FriendMessageEvent event) {
                 String msgString = event.getMessage().contentToString();
 
-                    if (msgString.equals("你好")) {
-                        event.getSender().sendMessage("你好!");
-                    }else {
-                        event.getSender().sendMessage("你好,我是机器人小懿~,请问需要什么帮助吗?");
-                    }
+                if (msgString.equals("你好")) {
+                    event.getSender().sendMessage("你好!");
+                } else {
+                    event.getSender().sendMessage("你好,我是机器人小懿~,请问需要什么帮助吗?");
+                }
 
 
                 return ListeningStatus.LISTENING;
