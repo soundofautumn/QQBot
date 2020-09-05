@@ -83,7 +83,7 @@ public class BotDatabaseQuery implements Runnable {
                             //如果符合则转化为long类型
                             long username = Long.parseLong(msgString);
                             //生成sql语句
-                            String sql = "SELECT username,grade FROM users WHERE username= " + username;
+                            String sql = "SELECT username,grade FROM users WHERE username= " + msgString;
                             //连接数据库
                             DBHelper db = null;
                             ResultSet rs = null;
@@ -92,7 +92,7 @@ public class BotDatabaseQuery implements Runnable {
                                 db = new DBHelper(sql);
                                 rs = db.pst.executeQuery();
                                 rs.next();
-                                sendMessage(event,rs.getString("grade"));
+                                sendMessage(event, rs.getString("grade"));
                             } catch (SQLException se) {
                                 se.printStackTrace();
                             } finally {
@@ -101,7 +101,7 @@ public class BotDatabaseQuery implements Runnable {
                                         rs.close();
                                     } catch (SQLException se) {
                                         se.printStackTrace();
-                                        sendMessage(event,"出现未知错误,数据库查询已停止");
+                                        sendMessage(event, "出现未知错误,数据库查询已停止");
                                     }
                                 }
                                 if (db != null) {
@@ -114,7 +114,7 @@ public class BotDatabaseQuery implements Runnable {
                             }
 
                         } else {
-                            sendMessage(event,"学号输入有误,数据库查询已停止");
+                            sendMessage(event, "学号输入有误,数据库查询已停止");
                         }
                         return ListeningStatus.STOPPED;
                     }
@@ -157,7 +157,7 @@ public class BotDatabaseQuery implements Runnable {
                                 db = new DBHelper(sql);
                                 rs = db.pst.executeQuery();
                                 rs.next();
-                                sendMessage(event,rs.getString("grade"));
+                                sendMessage(event, rs.getString("grade"));
                             } catch (SQLException se) {
                                 se.printStackTrace();
                             } finally {
@@ -166,7 +166,7 @@ public class BotDatabaseQuery implements Runnable {
                                         rs.close();
                                     } catch (SQLException se) {
                                         se.printStackTrace();
-                                        sendMessage(event,"出现未知错误,数据库查询已停止");
+                                        sendMessage(event, "出现未知错误,数据库查询已停止");
                                     }
                                 }
                                 if (db != null) {
@@ -179,7 +179,7 @@ public class BotDatabaseQuery implements Runnable {
                             }
 
                         } else {
-                            sendMessage(event,"学号输入有误,数据库查询已停止");
+                            sendMessage(event, "学号输入有误,数据库查询已停止");
                         }
                         return ListeningStatus.STOPPED;
                     }
