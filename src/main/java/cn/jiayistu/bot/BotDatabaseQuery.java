@@ -3,7 +3,10 @@ package cn.jiayistu.bot;
 import cn.jiayistu.database.DBHelper;
 import kotlin.coroutines.CoroutineContext;
 import net.mamoe.mirai.Bot;
-import net.mamoe.mirai.event.*;
+import net.mamoe.mirai.event.EventHandler;
+import net.mamoe.mirai.event.Events;
+import net.mamoe.mirai.event.ListeningStatus;
+import net.mamoe.mirai.event.SimpleListenerHost;
 import net.mamoe.mirai.message.FriendMessageEvent;
 import net.mamoe.mirai.message.GroupMessageEvent;
 import org.jetbrains.annotations.NotNull;
@@ -128,10 +131,12 @@ public class BotDatabaseQuery implements Runnable {
             @EventHandler
             public ListeningStatus DatabaseQuery(FriendMessageEvent event) {
 
+                //判断是否是发起查询的人
                 if (event.getSender().getId() == senderId) {
 
-                    String msgString = event.getMessage().contentToString();
+                    String msgString = event.getMessage().contentToString();//将收到的信息转化为字符串
 
+                    //排除自己和指令信息,去掉会产生bug
                     if ((!msgString.equals("数据库查询")) && event.getSender().getId() != bot.getId()) {
                         //判断是否是8位数字(是否是学号)
                         String pattern = "^\\d{8}$";
@@ -152,7 +157,7 @@ public class BotDatabaseQuery implements Runnable {
                                 db = new DBHelper(sql);
                                 rs = db.pst.executeQuery();
                                 rs.next();
-                                event.getSender().sendMessage(rs.getString("grade"));
+                                sendMessage(event,rs.getString("grade"));
                             } catch (SQLException se) {
                                 se.printStackTrace();
                             } finally {
@@ -197,4 +202,5 @@ public class BotDatabaseQuery implements Runnable {
     private static void sendMessage(GroupMessageEvent event, String message) {
         event.getGroup().sendMessage(message);
     }
+
 }
