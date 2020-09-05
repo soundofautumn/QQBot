@@ -1,6 +1,6 @@
 package cn.jiayistu.database;
 
-import cn.jiayistu.conf.Configuration;
+import cn.jiayistu.configuration.Configuration;
 
 import java.sql.*;
 

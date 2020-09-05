@@ -1,6 +1,6 @@
 package cn.jiayistu.bot;
 
-import cn.jiayistu.conf.Configuration;
+import cn.jiayistu.configuration.Configuration;
 import kotlin.coroutines.CoroutineContext;
 import net.mamoe.mirai.*;
 import net.mamoe.mirai.event.*;
