@@ -1,9 +1,9 @@
-package cn.jiayistu.database;
+package cn.jiayistu.utils;
 
 import java.sql.*;
 import java.util.ResourceBundle;
 
-public class DBUtil {
+public final class DBUtil {
     private static final ResourceBundle resourceBundle = ResourceBundle.getBundle("database");
 
 
