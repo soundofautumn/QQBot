@@ -8,8 +8,6 @@
 # jiayistuBot
 这是嘉懿之声下的QQ机器人项目
 
-![嘉懿之声](https://music.jiayistu.cn)
-![学生会主页](https://www.jiayistu.cn)
 
 #使用的开源项目
 ![mirai](https://github.com/mamoe/mirai)
