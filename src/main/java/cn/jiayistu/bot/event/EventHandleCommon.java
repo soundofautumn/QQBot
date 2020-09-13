@@ -28,7 +28,7 @@ public class EventHandleCommon extends SimpleListenerHost {
 
         if (msgString.equals("上传歌曲")) {
 
-            event.getSubject().sendMessage("输入格式为(introduce:xxx)");
+            event.getSubject().sendMessage("请发送歌曲简介和歌曲链接,简介输入格式为introduce:xxx");
             Events.registerEvents(bot, new SimpleListenerHost() {
                 private String music_share;
                 private String introduce;
