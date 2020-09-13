@@ -1,9 +1,8 @@
 .idea
-src/main/resources/conf
+src/main/resources
 target
 test
 img
 *.iml
-*.properties
 *.json
-.settings/org.eclipse.m2e.core.prefs
+.settings
