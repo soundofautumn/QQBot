@@ -27,10 +27,12 @@ public class UpLoad extends SimpleListenerHost {
 
     @EventHandler(concurrency = Listener.ConcurrencyKind.LOCKED, priority = Listener.EventPriority.HIGH)
     public ListeningStatus Update(MessageEvent updateEvent) {
-        if (updateEvent.getSender().getId()!=QQId) return ListeningStatus.LISTENING;
+        if (updateEvent.getSender().getId() != QQId) return ListeningStatus.LISTENING;
 
         //如果不是上传命令,则继续监听
         if (!updateEvent.getMessage().contentToString().equals("上传")) return ListeningStatus.LISTENING;
+        //如果是退出指令,则停止监听
+        if (!updateEvent.getMessage().contentToString().equals("退出")) return ListeningStatus.STOPPED;
         //判断歌曲信息是否完整,并发送提示信息
         if (introduce == null && music_share == null) {
             updateEvent.getSubject().sendMessage("缺少歌曲介绍或音乐链接");
@@ -75,7 +77,7 @@ public class UpLoad extends SimpleListenerHost {
 
     @EventHandler(priority = Listener.EventPriority.HIGH)
     public ListeningStatus OnMusicShare(MessageEvent shareEvent) {
-        if (shareEvent.getSender().getId()!=QQId) return ListeningStatus.LISTENING;
+        if (shareEvent.getSender().getId() != QQId) return ListeningStatus.LISTENING;
 
 
         //如果发送的消息不是分享链接,则保持监听
@@ -90,7 +92,7 @@ public class UpLoad extends SimpleListenerHost {
     @EventHandler(priority = Listener.EventPriority.HIGH)
     public ListeningStatus UploadMusic(MessageEvent musicEvent) {
 
-        if (musicEvent.getSender().getId()!=QQId) return ListeningStatus.LISTENING;
+        if (musicEvent.getSender().getId() != QQId) return ListeningStatus.LISTENING;
 
 
         //介绍输入格式为 介绍:xxx
