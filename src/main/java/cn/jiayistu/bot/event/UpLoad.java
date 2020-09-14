@@ -32,7 +32,7 @@ public class UpLoad extends SimpleListenerHost {
         //如果不是上传命令,则继续监听
         if (!updateEvent.getMessage().contentToString().equals("上传")) return ListeningStatus.LISTENING;
         //如果是退出指令,则停止监听
-        if (!updateEvent.getMessage().contentToString().equals("退出")) return ListeningStatus.STOPPED;
+        if (updateEvent.getMessage().contentToString().equals("退出")) return ListeningStatus.STOPPED;
         //判断歌曲信息是否完整,并发送提示信息
         if (introduce == null && music_share == null) {
             updateEvent.getSubject().sendMessage("缺少歌曲介绍或音乐链接");
