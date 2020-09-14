@@ -38,9 +38,9 @@ public class EventHandleCommon extends SimpleListenerHost {
         //判断接收到的信息
         if (msgString.equals("上传歌曲")) {
             event.getSubject().sendMessage("请发送歌曲介绍和歌曲链接,介绍输入格式为 \"介绍:xxx\"(注意为英文状态的冒号) ");//发送提示
-            event.getSender().getId();
+
             //注册新事件
-            Events.registerEvents(bot, new UpLoad());
+            Events.registerEvents(bot, new UpLoad(event.getSender().getId()));
 
 
         }
