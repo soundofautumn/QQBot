@@ -1,6 +1,7 @@
 package cn.jiayistu.bot.event;
 
 import cn.jiayistu.utils.DBUtil;
+import com.alibaba.fastjson.JSONObject;
 import kotlin.coroutines.CoroutineContext;
 import net.mamoe.mirai.Bot;
 import net.mamoe.mirai.event.*;
@@ -44,8 +45,10 @@ public class EventHandleCommon extends SimpleListenerHost {
 
             //注册新事件
             Events.registerEvents(bot, new SimpleListenerHost() {
-                private String music_share;//分享的音乐链接
+//                private String music_share;
+                private JSONObject music_share;//分享的音乐链接
                 private String introduce;//对音乐的介绍
+
 
 
                 @EventHandler(concurrency = Listener.ConcurrencyKind.LOCKED, priority = Listener.EventPriority.HIGH)
@@ -65,10 +68,13 @@ public class EventHandleCommon extends SimpleListenerHost {
                     try {
                         conn = DBUtil.getConnection();
                         //sql语句
-                        String sql = "INSERT INTO music (introduce,music_share) VALUES (?,?)";
+                        String sql = "INSERT INTO music (music_name,music_singer,introduce,music_share) VALUES (?,?,?,?)";
                         ps = conn.prepareStatement(sql);
-                        ps.setString(1, introduce);
-                        ps.setString(2, music_share);
+                        ps.setString(1,music_share.getJSONObject("meta").getJSONObject("music").getString("title"));
+                        ps.setString(2,music_share.getJSONObject("meta").getJSONObject("music").getString("desc"));
+
+                        ps.setString(3, introduce);
+                        ps.setString(4, music_share.toString());
 
                         ps.executeUpdate();
                         //上传成功
@@ -88,7 +94,10 @@ public class EventHandleCommon extends SimpleListenerHost {
                 public ListeningStatus OnMusicShare(MessageEvent shareEvent) {
                     //如果发送的消息不是分享链接,则保持监听
                     if (shareEvent.getMessage().get(1) instanceof LightApp) {
-                        music_share = shareEvent.getMessage().get(1).contentToString();//如果为链接则转化为json
+//                        music_share = shareEvent.getMessage().get(1).contentToString();//如果为链接则转化为json
+                        music_share = JSONObject.parseObject(shareEvent.getMessage().get(1).contentToString());//如果为链接则转化为json
+
+
                     }
                     return ListeningStatus.LISTENING;
                 }
