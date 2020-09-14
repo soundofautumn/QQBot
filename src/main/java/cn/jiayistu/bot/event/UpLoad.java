@@ -18,10 +18,17 @@ public class UpLoad extends SimpleListenerHost {
 
     private JSONObject music_share;//分享的音乐链接
     private String introduce;//对音乐的介绍
+    private final long QQId;
+
+    public UpLoad(long id) {
+        QQId = id;
+    }
 
 
     @EventHandler(concurrency = Listener.ConcurrencyKind.LOCKED, priority = Listener.EventPriority.HIGH)
     public ListeningStatus Update(MessageEvent updateEvent) {
+        if (updateEvent.getSender().getId()!=QQId) return ListeningStatus.LISTENING;
+
         //如果不是上传命令,则继续监听
         if (!updateEvent.getMessage().contentToString().equals("上传")) return ListeningStatus.LISTENING;
         //判断歌曲信息是否完整,并发送提示信息
@@ -68,6 +75,9 @@ public class UpLoad extends SimpleListenerHost {
 
     @EventHandler(priority = Listener.EventPriority.HIGH)
     public ListeningStatus OnMusicShare(MessageEvent shareEvent) {
+        if (shareEvent.getSender().getId()!=QQId) return ListeningStatus.LISTENING;
+
+
         //如果发送的消息不是分享链接,则保持监听
         if (shareEvent.getMessage().get(1) instanceof LightApp) {
             music_share = JSONObject.parseObject(shareEvent.getMessage().get(1).contentToString());//如果为链接则转化为json
@@ -79,6 +89,9 @@ public class UpLoad extends SimpleListenerHost {
 
     @EventHandler(priority = Listener.EventPriority.HIGH)
     public ListeningStatus UploadMusic(MessageEvent musicEvent) {
+
+        if (musicEvent.getSender().getId()!=QQId) return ListeningStatus.LISTENING;
+
 
         //介绍输入格式为 介绍:xxx
         String musicString = musicEvent.getMessage().contentToString();
