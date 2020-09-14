@@ -3,10 +3,7 @@ package cn.jiayistu.bot.event;
 import cn.jiayistu.utils.DBUtil;
 import kotlin.coroutines.CoroutineContext;
 import net.mamoe.mirai.Bot;
-import net.mamoe.mirai.event.EventHandler;
-import net.mamoe.mirai.event.Events;
-import net.mamoe.mirai.event.ListeningStatus;
-import net.mamoe.mirai.event.SimpleListenerHost;
+import net.mamoe.mirai.event.*;
 import net.mamoe.mirai.message.MessageEvent;
 import net.mamoe.mirai.message.data.LightApp;
 import org.jetbrains.annotations.NotNull;
@@ -51,7 +48,7 @@ public class EventHandleCommon extends SimpleListenerHost {
                 private String introduce;//对音乐的介绍
 
 
-                @EventHandler
+                @EventHandler(concurrency = Listener.ConcurrencyKind.LOCKED, priority = Listener.EventPriority.HIGH)
                 ListeningStatus Update(MessageEvent updateEvent) {
                     //如果不是上传命令,则继续监听
                     if (!updateEvent.getMessage().contentToString().equals("上传")) return ListeningStatus.LISTENING;
@@ -87,7 +84,7 @@ public class EventHandleCommon extends SimpleListenerHost {
                     return ListeningStatus.STOPPED;//停止监听
                 }
 
-                @EventHandler
+                @EventHandler(priority = Listener.EventPriority.HIGH)
                 public ListeningStatus OnMusicShare(MessageEvent shareEvent) {
                     //如果发送的消息不是分享链接,则保持监听
                     if (shareEvent.getMessage().get(1) instanceof LightApp) {
@@ -96,7 +93,7 @@ public class EventHandleCommon extends SimpleListenerHost {
                     return ListeningStatus.LISTENING;
                 }
 
-                @EventHandler
+                @EventHandler(priority = Listener.EventPriority.HIGH)
                 public ListeningStatus UploadMusic(MessageEvent musicEvent) {
 
                     //介绍输入格式为 介绍:xxx
