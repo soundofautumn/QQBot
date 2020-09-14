@@ -110,7 +110,7 @@ public class EventHandleCommon extends SimpleListenerHost {
 
                     String[] strings = musicString.split(":");//分割字符串
                     //判断是否符合要求
-                    if (strings.length != 2 || strings[0].equals("介绍")) return ListeningStatus.LISTENING;
+                    if (strings.length != 2 || !strings[0].equals("介绍")) return ListeningStatus.LISTENING;
                     introduce = strings[1];//将歌曲介绍保存
                     return ListeningStatus.LISTENING;
                 }
