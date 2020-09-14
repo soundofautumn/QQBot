@@ -11,7 +11,7 @@ public final class DBUtil {
     private static final String DB_URL = resourceBundle.getString("DB_URL");
     private static final String JDBC_DRIVER = resourceBundle.getString("JDBC_DRIVER");
     private static final String USER = resourceBundle.getString("USER");
-    private static final String PASS = resourceBundle.getString("PASS");
+    private static final String PASSWORD = resourceBundle.getString("PASSWORD");
 
     static {
         try {
@@ -31,7 +31,7 @@ public final class DBUtil {
      * @throws SQLException 数据库连接异常
      */
     public static Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(DB_URL, USER, PASS);
+        return DriverManager.getConnection(DB_URL, USER, PASSWORD);
     }
 
     /**
