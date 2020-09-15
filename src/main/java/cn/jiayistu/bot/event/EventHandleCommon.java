@@ -37,9 +37,24 @@ public class EventHandleCommon extends SimpleListenerHost {
 
         //判断接收到的信息
         if (msgString.equals("点歌")) {
+            if (!Account.isBind(event.getSender().getId())) {
+                event.getSubject().sendMessage("QQ号未绑定,请先绑定");
+                return ListeningStatus.LISTENING;
+            }
+
             event.getSubject().sendMessage("请发送歌曲介绍和歌曲链接,介绍输入格式为 \"介绍:xxx\"(注意为英文状态的冒号) ");//发送提示
             //注册新事件
             Events.registerEvents(bot, new UpLoad(event.getSender().getId()));
+        } else if (msgString.equals("绑定")) {
+            if (Account.isBind(event.getSender().getId())) {
+                event.getSubject().sendMessage("QQ号已绑定");
+            }else {
+                event.getSubject().sendMessage("准备绑定....请注意一个QQ号只能绑定一个账号");
+
+                Events.registerEvents(bot,new Account(event.getSender().getId()));
+
+            }
+
         } else if (msgString.equals("@" + event.getBot().getNick())) {
             event.getSubject().sendMessage("?");
         }
