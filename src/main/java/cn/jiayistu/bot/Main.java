@@ -24,12 +24,9 @@ public class Main {
 
         bot.login();//登录
 
+
         //注册监听事件
-//       Events.registerEvents(bot, new FriendEventHandleCommon(bot));
-//       Events.registerEvents(bot, new GroupEventHandleCommon(bot));
         Events.registerEvents(new EventHandleCommon(bot));
-
-
 
         bot.join();//阻塞进程
 
