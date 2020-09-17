@@ -1,6 +1,6 @@
 package cn.jiayistu.bot.event;
 
-import cn.jiayistu.utils.DBUtil;
+import cn.jiayistu.utils.DataBaseUtils;
 import kotlin.coroutines.CoroutineContext;
 import net.mamoe.mirai.event.EventHandler;
 import net.mamoe.mirai.event.Listener;
@@ -29,7 +29,7 @@ public class Account extends SimpleListenerHost {
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
-            conn = DBUtil.getConnection();
+            conn = DataBaseUtils.getConnection();
 
             String sql = "SELECT qq FROM users WHERE qq = ? ";
             ps = conn.prepareStatement(sql);
@@ -43,7 +43,7 @@ public class Account extends SimpleListenerHost {
             e.printStackTrace();
             return false;
         } finally {
-            DBUtil.close(conn, ps, rs);
+            DataBaseUtils.close(conn, ps, rs);
         }
     }
 
