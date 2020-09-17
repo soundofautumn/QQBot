@@ -14,6 +14,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * @author QJMing
+ */
 public class Account extends SimpleListenerHost {
     private long qq;
 
