@@ -11,10 +11,14 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * 处理主要事件
+ *
+ * @author QJMing
  */
 public class EventHandleCommon extends SimpleListenerHost {
 
     private final Bot bot;
+    String command1 = "点歌";
+    String command2 = "绑定";
 
     /**
      * 构造方法
@@ -32,26 +36,29 @@ public class EventHandleCommon extends SimpleListenerHost {
      * @return 是否继续监听
      */
     @EventHandler
-    public ListeningStatus OnMessage(MessageEvent event) {
-        String msgString = event.getMessage().contentToString();//将获取到的事件转为可阅读的字符串
+    public ListeningStatus onMessage(MessageEvent event) {
+        //将获取到的事件转为可阅读的字符串
+        String msgString = event.getMessage().contentToString();
 
         //判断接收到的信息
-        if (msgString.equals("点歌")) {
+        //判断是否发送的是绑定命令
+        if (command1.equals(msgString)) {
             if (!Account.isBind(event.getSender().getId())) {
                 event.getSubject().sendMessage("QQ号未绑定,请先绑定");
                 return ListeningStatus.LISTENING;
             }
-
-            event.getSubject().sendMessage("请发送歌曲介绍和歌曲链接,介绍输入格式为 \"介绍:xxx\"(注意为英文状态的冒号) ");//发送提示
+            //发送提示
+            event.getSubject().sendMessage("请发送歌曲介绍和歌曲链接,介绍输入格式为 \"介绍:xxx\"(注意为英文状态的冒号) ");
             //注册新事件
             Events.registerEvents(bot, new UpLoad(event.getSender().getId()));
-        } else if (msgString.equals("绑定")) {
+            //判断是否发送的绑定命令
+        } else if (command2.equals(msgString)) {
             if (Account.isBind(event.getSender().getId())) {
                 event.getSubject().sendMessage("QQ号已绑定");
-            }else {
+            } else {
                 event.getSubject().sendMessage("准备绑定....请注意一个QQ号只能绑定一个账号");
 
-                Events.registerEvents(bot,new Account(event.getSender().getId()));
+                Events.registerEvents(bot, new Account(event.getSender().getId()));
 
             }
 
