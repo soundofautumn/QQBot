@@ -14,6 +14,9 @@ import org.jetbrains.annotations.NotNull;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 
+/**
+ * @author QJMing
+ */
 public class UpLoad extends SimpleListenerHost {
     /**
      * 储存音乐的分享链接
@@ -42,6 +45,7 @@ public class UpLoad extends SimpleListenerHost {
         }
         //如果是退出指令,则停止监听
         if ("退出".equals(updateEvent.getMessage().contentToString())) {
+            updateEvent.getSubject().sendMessage("已退出");
             return ListeningStatus.STOPPED;
         }
         //判断歌曲信息是否完整,并发送提示信息

@@ -8,6 +8,9 @@ import net.mamoe.mirai.utils.BotConfiguration;
 
 import java.util.ResourceBundle;
 
+/**
+ * @author QJMing
+ */
 public class Main {
     public static void main(String[] args) {
         ResourceBundle resourceBundle = ResourceBundle.getBundle("bot");
@@ -23,7 +26,6 @@ public class Main {
         });
 
         bot.login();//登录
-
 
         //注册监听事件
         Events.registerEvents(new EventHandleCommon(bot));

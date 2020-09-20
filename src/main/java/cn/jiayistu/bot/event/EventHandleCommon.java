@@ -17,8 +17,6 @@ import org.jetbrains.annotations.NotNull;
 public class EventHandleCommon extends SimpleListenerHost {
 
     private final Bot bot;
-    String command1 = "点歌";
-    String command2 = "绑定";
 
     /**
      * 构造方法
@@ -42,7 +40,7 @@ public class EventHandleCommon extends SimpleListenerHost {
 
         //判断接收到的信息
         //判断是否发送的是绑定命令
-        if (command1.equals(msgString)) {
+        if ("点歌".equals(msgString)) {
             if (!Account.isBind(event.getSender().getId())) {
                 event.getSubject().sendMessage("QQ号未绑定,请先绑定");
                 return ListeningStatus.LISTENING;
@@ -52,11 +50,14 @@ public class EventHandleCommon extends SimpleListenerHost {
             //注册新事件
             Events.registerEvents(bot, new UpLoad(event.getSender().getId()));
             //判断是否发送的绑定命令
-        } else if (command2.equals(msgString)) {
+        } else if ("绑定".equals(msgString)) {
+            //判断是否已经绑定
             if (Account.isBind(event.getSender().getId())) {
                 event.getSubject().sendMessage("QQ号已绑定");
             } else {
+                //绑定
                 event.getSubject().sendMessage("准备绑定....请注意一个QQ号只能绑定一个账号");
+                event.getSubject().sendMessage("请输入您的学号");
 
                 Events.registerEvents(bot, new Account(event.getSender().getId()));
 
