@@ -46,9 +46,11 @@ public class EventHandleCommon extends SimpleListenerHost {
                 return ListeningStatus.LISTENING;
             }
             //发送提示
-            event.getSubject().sendMessage("请发送歌曲介绍和歌曲链接,介绍输入格式为 \"介绍:xxx\"(注意为英文状态的冒号) ");
+            event.getSubject().sendMessage("请发送歌曲介绍和歌曲链接,介绍输入格式为 \"介绍:xxx\" ,最后输入 \"上传\" 来确认");
+            event.getSubject().sendMessage("如需更改上传的内容,直接重新发送即可");
+
             //注册新事件
-            Events.registerEvents(bot, new UpLoad(event.getSender().getId()));
+            Events.registerEvents(bot, new MusicUpLoad(event.getSender().getId()));
             //判断是否发送的绑定命令
         } else if ("绑定".equals(msgString)) {
             //判断是否已经绑定
@@ -64,7 +66,10 @@ public class EventHandleCommon extends SimpleListenerHost {
             }
 
         } else if (msgString.equals("@" + event.getBot().getNick())) {
-            event.getSubject().sendMessage("?");
+            event.getSubject().sendMessage("现支持的命令如下:\n" +
+                    "1. \"点歌\" :进行上传歌曲等操作\n" +
+                    "2. \"绑定\" :进行QQ号与学号的绑定(如需解绑,请联系管理员)\n");
+
         }
 
 

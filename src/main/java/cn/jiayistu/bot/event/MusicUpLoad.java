@@ -17,7 +17,7 @@ import java.sql.PreparedStatement;
 /**
  * @author QJMing
  */
-public class UpLoad extends SimpleListenerHost {
+public class MusicUpLoad extends SimpleListenerHost {
     /**
      * 储存音乐的分享链接
      */
@@ -28,19 +28,14 @@ public class UpLoad extends SimpleListenerHost {
     private String introduce;
     private final long QQId;
 
-    public UpLoad(long id) {
+    public MusicUpLoad(long id) {
         QQId = id;
     }
 
 
     @EventHandler(concurrency = Listener.ConcurrencyKind.LOCKED, priority = Listener.EventPriority.HIGH)
-    public ListeningStatus update(MessageEvent updateEvent) {
+    public ListeningStatus update(MessageEvent updateEvent){
         if (updateEvent.getSender().getId() != QQId) {
-            return ListeningStatus.LISTENING;
-        }
-
-        //如果不是上传命令,则继续监听
-        if (!"上传".equals(updateEvent.getMessage().contentToString())) {
             return ListeningStatus.LISTENING;
         }
         //如果是退出指令,则停止监听
@@ -48,6 +43,11 @@ public class UpLoad extends SimpleListenerHost {
             updateEvent.getSubject().sendMessage("已退出");
             return ListeningStatus.STOPPED;
         }
+        //如果不是上传命令,则继续监听
+        if (!"上传".equals(updateEvent.getMessage().contentToString())) {
+            return ListeningStatus.LISTENING;
+        }
+
         //判断歌曲信息是否完整,并发送提示信息
         if (introduce == null && musicShare == null) {
             updateEvent.getSubject().sendMessage("缺少歌曲介绍或音乐链接");
@@ -80,7 +80,7 @@ public class UpLoad extends SimpleListenerHost {
             //上传成功
             updateEvent.getSubject().sendMessage("上传成功");
         } catch (Exception e) {
-            updateEvent.getSubject().sendMessage("上传过程中出错,以自动退出");
+            updateEvent.getSubject().sendMessage("上传过程中出错,已自动退出");
             e.printStackTrace();
         } finally {
             //关闭连接
@@ -115,19 +115,17 @@ public class UpLoad extends SimpleListenerHost {
         if (musicEvent.getSender().getId() != QQId) {
             return ListeningStatus.LISTENING;
         }
-
-
         //介绍输入格式为 介绍:xxx
         String musicString = musicEvent.getMessage().contentToString();
-
-        //分割字符串
-        String[] strings = musicString.split(":");
-        //判断是否符合要求
-        if (strings.length != 2 || !"介绍".equals(strings[0])) {
+        if (!musicString.startsWith("介绍")) {
             return ListeningStatus.LISTENING;
         }
-        //将歌曲介绍保存
-        introduce = strings[1];
+        //分割字符串并将歌曲介绍保存
+        //从字符串的第3个字符开始截取
+        introduce = musicString.substring(3);
+        musicEvent.getSubject().sendMessage("介绍上传成功,介绍词为:");
+        musicEvent.getSubject().sendMessage(introduce);
+
         return ListeningStatus.LISTENING;
     }
 

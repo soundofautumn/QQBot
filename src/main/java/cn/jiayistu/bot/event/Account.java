@@ -52,8 +52,12 @@ public class Account extends SimpleListenerHost {
     @EventHandler(priority = Listener.EventPriority.HIGH)
     public ListeningStatus binding(MessageEvent event) {
         String studentId = event.getMessage().contentToString();
-        //判断是否是自己发出来的和是否是纯数字
-        if (event.getSender().getId() != qq || !isNumeric(studentId)) {
+        //判断是否是自己发出来的
+        if (event.getSender().getId() != qq) {
+            return ListeningStatus.LISTENING;
+        }
+        //是否是8位数字
+        if (!isNumeric(studentId)) {
             return ListeningStatus.LISTENING;
         }
         //转成数字
@@ -87,13 +91,12 @@ public class Account extends SimpleListenerHost {
         }
 
 
-
         return ListeningStatus.STOPPED;
     }
 
 
     public boolean isNumeric(String str) {
-        String pattern = "[0-9]*";
+        String pattern = "^\\d{8}$";
         return Pattern.matches(pattern, str);
     }
 
