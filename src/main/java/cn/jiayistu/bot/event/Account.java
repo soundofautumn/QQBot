@@ -22,7 +22,7 @@ public class Account extends SimpleListenerHost {
         this.qq = id;
     }
 
-    public static boolean isBind(long qq) {
+    public synchronized static boolean isBind(long qq) {
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -49,8 +49,9 @@ public class Account extends SimpleListenerHost {
      * @param event 事件
      * @return 是否监听
      */
-    @EventHandler(priority = Listener.EventPriority.HIGH)
+    @EventHandler(priority = Listener.EventPriority.HIGH, concurrency = Listener.ConcurrencyKind.LOCKED)
     public ListeningStatus binding(MessageEvent event) {
+
         String studentId = event.getMessage().contentToString();
         //判断是否是自己发出来的
         if (event.getSender().getId() != qq) {
@@ -73,15 +74,23 @@ public class Account extends SimpleListenerHost {
             ps = conn.prepareStatement(sql);
             ps.setInt(1, id);
             rs = ps.executeQuery();
+            //情况1:未找到学号 rs.next() = false
+            //情况2:找到学号,但QQ号是空的,即 rs.wasNull = true
+            //情况3:找到学号,QQ号也有,所以 rs.next()=true, rs.wasNull = false
             //如果数据库里这个学号已经注册了
-            if (rs.next() && rs.wasNull()) {
-                event.getSubject().sendMessage("此学号已注册,绑定失败,请重新绑定");
+            if (rs.next()) {
+                if (rs.wasNull()) {
+                    //注册这个学号
+                    event.getSubject().sendMessage("请输入您的姓名以验证");
+                    //注册
+                    Events.registerEvents(new NewAccount(event.getSender().getId(), id));
+                } else {
+                    event.getSubject().sendMessage("此学号已注册,绑定失败,请重新绑定");
+                }
                 return ListeningStatus.STOPPED;
             } else {
-                //否则注册这个学号
-                event.getSubject().sendMessage("请输入您的姓名以验证");
-                //注册
-                Events.registerEvents(new NewAccount(event.getSender().getId(), id));
+                event.getSubject().sendMessage("未找到此学号,请重新输入");
+                return ListeningStatus.LISTENING;
             }
 
         } catch (SQLException e) {

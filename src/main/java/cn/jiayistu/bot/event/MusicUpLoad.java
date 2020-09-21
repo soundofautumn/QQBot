@@ -6,7 +6,6 @@ import kotlin.coroutines.CoroutineContext;
 import net.mamoe.mirai.event.EventHandler;
 import net.mamoe.mirai.event.Listener;
 import net.mamoe.mirai.event.ListeningStatus;
-import net.mamoe.mirai.event.SimpleListenerHost;
 import net.mamoe.mirai.message.MessageEvent;
 import net.mamoe.mirai.message.data.LightApp;
 import org.jetbrains.annotations.NotNull;
@@ -17,7 +16,7 @@ import java.sql.PreparedStatement;
 /**
  * @author QJMing
  */
-public class MusicUpLoad extends SimpleListenerHost {
+public class MusicUpLoad extends CanBeQuit {
     /**
      * 储存音乐的分享链接
      */
@@ -38,11 +37,7 @@ public class MusicUpLoad extends SimpleListenerHost {
         if (updateEvent.getSender().getId() != QQId) {
             return ListeningStatus.LISTENING;
         }
-        //如果是退出指令,则停止监听
-        if ("退出".equals(updateEvent.getMessage().contentToString())) {
-            updateEvent.getSubject().sendMessage("已退出");
-            return ListeningStatus.STOPPED;
-        }
+
         //如果不是上传命令,则继续监听
         if (!"上传".equals(updateEvent.getMessage().contentToString())) {
             return ListeningStatus.LISTENING;

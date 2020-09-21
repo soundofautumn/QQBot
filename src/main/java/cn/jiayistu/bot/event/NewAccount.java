@@ -30,8 +30,6 @@ public class NewAccount extends SimpleListenerHost {
         if (senderQQ != event.getSender().getId()) {
             return ListeningStatus.LISTENING;
         }
-
-
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -61,10 +59,6 @@ public class NewAccount extends SimpleListenerHost {
         } finally {
             DataBaseUtils.close(conn, ps, rs);
         }
-
-
-
-
 
         return ListeningStatus.STOPPED;
     }
