@@ -1,8 +1,10 @@
 package cn.jiayistu.bot.event;
 
 import cn.jiayistu.utils.DataBaseUtils;
+import net.mamoe.mirai.message.data.LightApp;
 import net.mamoe.mirai.message.data.MessageChain;
 import net.mamoe.mirai.message.data.MessageChainBuilder;
+import net.mamoe.mirai.message.data.PlainText;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -16,9 +18,62 @@ import java.util.Locale;
  */
 public class MusicList {
 
-    public synchronized static MessageChain getDetail() {
-        MessageChain messages= new MessageChainBuilder()
+    public synchronized static MessageChain getMusicShare(String id) {
+        MessageChainBuilder mcb = new MessageChainBuilder();
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            conn = DataBaseUtils.getConnection();
+            String sql = "SELECT music_share FROM music WHERE id = ?";
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, id);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                mcb.append(new LightApp(rs.getString(1)));
+            }
 
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return mcb.append("未查询到此歌曲").asMessageChain();
+
+        } finally {
+            DataBaseUtils.close(conn, ps, rs);
+        }
+        mcb.append("");
+
+
+        return mcb.asMessageChain();
+    }
+
+    public synchronized static MessageChain getIntroduce(String id) {
+        MessageChainBuilder mcb = new MessageChainBuilder();
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            conn = DataBaseUtils.getConnection();
+            String sql = "SELECT introduce FROM music WHERE id = ?";
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, id);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                mcb.append(new PlainText(rs.getString(1)));
+            }
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return mcb.append("未查询到此歌曲").asMessageChain();
+
+        } finally {
+            DataBaseUtils.close(conn, ps, rs);
+        }
+        mcb.append("");
+
+
+        return mcb.asMessageChain();
     }
 
     public synchronized static String getBrief() {
