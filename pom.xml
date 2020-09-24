@@ -6,7 +6,7 @@
 
     <groupId>cn.jiayistu</groupId>
     <artifactId>jiayistuBot</artifactId>
-    <version>1.5</version>
+    <version>1.5.1</version>
 
     <properties>
         <!--项目编码改为UTF-8 -->
