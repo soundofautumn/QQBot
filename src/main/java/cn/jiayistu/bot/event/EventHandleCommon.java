@@ -71,7 +71,7 @@ public class EventHandleCommon extends SimpleListenerHost {
                     "2. \"绑定\" :进行QQ号与学号的绑定(如需解绑,请联系管理员)\n");
 
         } else if ("显示歌曲列表".equals(msgString)) {
-            event.getSubject().sendMessage(MusicList.printBrief());
+            event.getSubject().sendMessage(MusicList.getBrief());
         }
 
 

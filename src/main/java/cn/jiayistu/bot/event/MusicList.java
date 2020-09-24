@@ -1,6 +1,8 @@
 package cn.jiayistu.bot.event;
 
 import cn.jiayistu.utils.DataBaseUtils;
+import net.mamoe.mirai.message.data.MessageChain;
+import net.mamoe.mirai.message.data.MessageChainBuilder;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -14,7 +16,12 @@ import java.util.Locale;
  */
 public class MusicList {
 
-    public synchronized static String printBrief() {
+    public synchronized static MessageChain getDetail() {
+        MessageChain messages= new MessageChainBuilder()
+
+    }
+
+    public synchronized static String getBrief() {
         StringBuffer sb = new StringBuffer();
         Formatter formatter = new Formatter(sb, Locale.CHINA);
         Connection conn = null;
