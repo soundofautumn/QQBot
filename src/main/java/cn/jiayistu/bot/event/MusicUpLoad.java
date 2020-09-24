@@ -35,7 +35,7 @@ public class MusicUpLoad extends CanBeQuit {
 
 
     @EventHandler(concurrency = Listener.ConcurrencyKind.LOCKED, priority = Listener.EventPriority.HIGH)
-    public ListeningStatus update(MessageEvent updateEvent){
+    public ListeningStatus update(MessageEvent updateEvent) {
         if (updateEvent.getSender().getId() != QQId) {
             return ListeningStatus.LISTENING;
         }
@@ -83,7 +83,6 @@ public class MusicUpLoad extends CanBeQuit {
 
     @EventHandler(priority = Listener.EventPriority.HIGH)
     public ListeningStatus onMusicShare(MessageEvent shareEvent) {
-
         if (shareEvent.getSender().getId() != QQId) {
             return ListeningStatus.LISTENING;
         }
@@ -94,8 +93,10 @@ public class MusicUpLoad extends CanBeQuit {
             //如果为链接则转化为json
             musicShare = JSONObject.parseObject(shareEvent.getMessage().get(1).contentToString());
             //获取歌名和歌手
-             musicName = musicShare.getJSONObject("meta").getJSONObject("news").getString("title");
-             musicSinger = musicShare.getJSONObject("meta").getJSONObject("news").getString("desc");
+            JSONObject music = musicShare.getJSONObject("meta").getJSONObject("news") != null ? musicShare.getJSONObject("meta").getJSONObject("news") : musicShare.getJSONObject("meta").getJSONObject("music");
+
+            musicName = music.getString("title");
+            musicSinger = music.getString("desc");
 
             shareEvent.getSubject().sendMessage("歌名为:" + musicName);
             shareEvent.getSubject().sendMessage("歌手为:" + musicSinger);

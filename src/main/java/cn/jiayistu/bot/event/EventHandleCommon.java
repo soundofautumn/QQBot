@@ -64,11 +64,12 @@ public class EventHandleCommon extends SimpleListenerHost {
                 Events.registerEvents(bot, new Account(event.getSender().getId()));
 
             }
-
         } else if (msgString.equals("@" + event.getBot().getNick())) {
             event.getSubject().sendMessage("现支持的命令如下:\n" +
                     "1. \"点歌\" :进行上传歌曲等操作\n" +
-                    "2. \"绑定\" :进行QQ号与学号的绑定(如需解绑,请联系管理员)\n");
+                    "2. \"绑定\" :进行QQ号与学号的绑定(如需解绑,请联系管理员)\n" +
+                    "3. \"显示歌曲列表\" :显示简要的歌曲信息" +
+                    "4. \"显示歌曲详细信息:X\" :X为歌曲序号,显示歌曲的简介和分享链接");
 
         } else if ("显示歌曲列表".equals(msgString)) {
             event.getSubject().sendMessage(MusicList.getBrief());
