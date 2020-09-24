@@ -79,7 +79,8 @@ public class Account extends SimpleListenerHost {
             //情况3:找到学号,QQ号也有,所以 rs.next()=true, rs.wasNull = false
             //如果数据库里这个学号已经注册了
             if (rs.next()) {
-                if (rs.wasNull()) {
+                //TODO bug here
+                if (!rs.wasNull()) {
                     //注册这个学号
                     event.getSubject().sendMessage("请输入您的姓名以验证");
                     //注册
