@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>cn.jiayistu</groupId>
   <artifactId>jiayistuBot</artifactId>
-  <version>1.5</version>
+  <version>1.5.1</version>
   <build>
     <plugins>
       <plugin>
