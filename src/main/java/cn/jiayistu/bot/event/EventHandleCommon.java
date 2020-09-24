@@ -72,6 +72,11 @@ public class EventHandleCommon extends SimpleListenerHost {
 
         } else if ("显示歌曲列表".equals(msgString)) {
             event.getSubject().sendMessage(MusicList.getBrief());
+        } else if (msgString.contains("显示歌曲详细信息")) {
+            String s = msgString.split(":")[1];
+            event.getSubject().sendMessage(MusicList.getIntroduce(s));
+            event.getSubject().sendMessage(MusicList.getMusicShare(s));
+
         }
 
 

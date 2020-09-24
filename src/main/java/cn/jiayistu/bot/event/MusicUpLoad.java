@@ -25,6 +25,8 @@ public class MusicUpLoad extends CanBeQuit {
      * 储存对音乐的介绍
      */
     private String introduce;
+    private String musicName;
+    private String musicSinger;
     private final long QQId;
 
     public MusicUpLoad(long id) {
@@ -59,13 +61,6 @@ public class MusicUpLoad extends CanBeQuit {
             String sql = "INSERT INTO music (music_name,music_singer,introduce,music_share) VALUES (?,?,?,?)";
             ps = conn.prepareStatement(sql);
 
-            //获取歌名和歌手
-            String musicName = musicShare.getJSONObject("meta").getJSONObject("music").getString("title");
-            String musicSinger = musicShare.getJSONObject("meta").getJSONObject("music").getString("desc");
-
-            updateEvent.getSubject().sendMessage("歌名为:" + musicName);
-            updateEvent.getSubject().sendMessage("歌手为:" + musicSinger);
-
             ps.setString(1, musicName);
             ps.setString(2, musicSinger);
             ps.setString(3, introduce);
@@ -98,7 +93,12 @@ public class MusicUpLoad extends CanBeQuit {
         if (shareEvent.getMessage().get(1) instanceof LightApp) {
             //如果为链接则转化为json
             musicShare = JSONObject.parseObject(shareEvent.getMessage().get(1).contentToString());
+            //获取歌名和歌手
+             musicName = musicShare.getJSONObject("meta").getJSONObject("news").getString("title");
+             musicSinger = musicShare.getJSONObject("meta").getJSONObject("news").getString("desc");
 
+            shareEvent.getSubject().sendMessage("歌名为:" + musicName);
+            shareEvent.getSubject().sendMessage("歌手为:" + musicSinger);
 
         }
         return ListeningStatus.LISTENING;
