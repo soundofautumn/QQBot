@@ -2,6 +2,7 @@ package cn.jiayistu.bot.event;
 
 import kotlin.coroutines.CoroutineContext;
 import net.mamoe.mirai.event.EventHandler;
+import net.mamoe.mirai.event.Listener;
 import net.mamoe.mirai.event.ListeningStatus;
 import net.mamoe.mirai.event.SimpleListenerHost;
 import net.mamoe.mirai.message.MessageEvent;
@@ -12,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
  */
 public abstract class CanBeQuit extends SimpleListenerHost {
 
-    @EventHandler()
+    @EventHandler(priority = Listener.EventPriority.HIGHEST)
     public ListeningStatus exit(MessageEvent event) {
         if ("退出".equals(event.getMessage().contentToString())) {
             event.getSubject().sendMessage("已退出");
