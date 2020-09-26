@@ -15,33 +15,13 @@ import java.util.regex.Pattern;
 /**
  * @author QJMing
  */
-public class Account extends SimpleListenerHost {
+public class Bind extends SimpleListenerHost {
     private final long qq;
 
-    public Account(long id) {
+    public Bind(long id) {
         this.qq = id;
     }
 
-    public synchronized static boolean isBind(long qq) {
-        Connection conn = null;
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-        try {
-            conn = DataBaseUtils.getConnection();
-
-            String sql = "SELECT qq FROM users WHERE qq = ? ";
-            ps = conn.prepareStatement(sql);
-            ps.setLong(1, qq);
-            rs = ps.executeQuery();
-            return rs.next();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        } finally {
-            DataBaseUtils.close(conn, ps, rs);
-        }
-    }
 
     /**
      * 绑定qq号
@@ -79,8 +59,8 @@ public class Account extends SimpleListenerHost {
             //情况3:找到学号,QQ号也有,所以 rs.next()=true, rs.wasNull = false
             //如果数据库里这个学号已经注册了
             if (rs.next()) {
-                //TODO bug here
-                if (!rs.wasNull()) {
+                rs.getString(1);
+                if (rs.wasNull()) {
                     //注册这个学号
                     event.getSubject().sendMessage("请输入您的姓名以验证");
                     //注册
