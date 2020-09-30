@@ -4,9 +4,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>cn.jiayistu</groupId>
-    <artifactId>jiayistuBot</artifactId>
-    <version>1.5.1</version>
+    <groupId>com.soundofautumn</groupId>
+    <artifactId>QQBot</artifactId>
+    <version>1.0-SNAPSHOT</version>
 
     <properties>
         <!--项目编码改为UTF-8 -->
@@ -128,5 +128,4 @@
         </dependency>
 
     </dependencies>
-
 </project>
