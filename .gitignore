@@ -2,6 +2,7 @@
 src/main/resources
 target
 test
+out
 img
 *.iml
 *.json
