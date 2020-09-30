@@ -11,7 +11,7 @@
  Target Server Version : 50731
  File Encoding         : 65001
 
- Date: 20/09/2020 19:06:39
+ Date: 01/10/2020 00:53:27
 */
 
 SET NAMES utf8mb4;
@@ -33,13 +33,14 @@ CREATE TABLE `admin`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `music`;
 CREATE TABLE `music`  (
-  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '序号',
+  `id` int(255) NOT NULL AUTO_INCREMENT COMMENT '序号',
   `music_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '歌曲名称',
   `music_singer` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '歌星姓名',
-  `introduce` varchar(8888) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '介绍',
-  `music_share` json NULL COMMENT '分享链接',
+  `introduce` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '介绍',
+  `music_share` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '分享链接',
+  `likes` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '点赞的数据',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 13 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 19 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for users
@@ -52,6 +53,6 @@ CREATE TABLE `users`  (
   `role_id` int(8) NOT NULL,
   `qq` bigint(12) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3089 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户信息' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 6385 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户信息' ROW_FORMAT = Dynamic;
 
 SET FOREIGN_KEY_CHECKS = 1;
