@@ -32,7 +32,7 @@
                 <transformer />
                 <transformer />
                 <transformer>
-                  <mainClass>cn.jiayistu.bot.Main</mainClass>
+                  <mainClass>com.soundOfAutumn.bot.Main</mainClass>
                 </transformer>
               </transformers>
             </configuration>
