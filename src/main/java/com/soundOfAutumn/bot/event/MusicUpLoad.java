@@ -93,7 +93,12 @@ public class MusicUpLoad extends CanBeQuit {
             //如果为链接则转化为json
             musicShare = JSONObject.parseObject(shareEvent.getMessage().get(1).contentToString());
             //获取歌名和歌手
-            JSONObject music = musicShare.getJSONObject("meta").getJSONObject("news") != null ? musicShare.getJSONObject("meta").getJSONObject("news") : musicShare.getJSONObject("meta").getJSONObject("music");
+            JSONObject music = null;
+            if (musicShare.getJSONObject("meta").containsKey("news")) {
+                music = musicShare.getJSONObject("meta").getJSONObject("news");
+            } else if (musicShare.getJSONObject("meta").containsKey("music")) {
+                music = musicShare.getJSONObject("meta").getJSONObject("music");
+            }
 
             musicName = music.getString("title");
             musicSinger = music.getString("desc");
