@@ -58,13 +58,14 @@ public class MusicUpLoad extends CanBeQuit {
         try {
             conn = DataBaseUtils.getConnection();
             //sql语句
-            String sql = "INSERT INTO music (music_name,music_singer,introduce,music_share) VALUES (?,?,?,?)";
+            String sql = "INSERT INTO music (music_name,music_singer,introduce,music_share,likes) VALUES (?,?,?,?,?)";
             ps = conn.prepareStatement(sql);
 
             ps.setString(1, musicName);
             ps.setString(2, musicSinger);
             ps.setString(3, introduce);
             ps.setString(4, musicShare.toString());
+            ps.setString(5,"{\"total\":0,\"like_users\":[]}");
 
             ps.executeUpdate();
             //上传成功

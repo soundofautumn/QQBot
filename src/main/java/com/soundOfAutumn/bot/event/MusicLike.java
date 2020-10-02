@@ -31,7 +31,7 @@ public class MusicLike {
 
             rs = ps.executeQuery();
 
-            while (rs.next()) {
+            if (rs.next()) {
                 JSONObject jsonObject = JSON.parseObject(rs.getString(1));
                 JSONArray likeUsers = jsonObject.getJSONArray("like_users");
                 for (Object likeUser :
@@ -54,7 +54,41 @@ public class MusicLike {
     }
 
     private synchronized static void newLike(String musicId, long userId) {
-        //TODO 将likes中的total++ 并将userId添加进去
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try {
+            conn = DataBaseUtils.getConnection();
+            String sql = "SELECT likes FROM music WHERE id = ?";
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, musicId);
+
+            rs = ps.executeQuery();
+            JSONObject jsonObject = null;
+            if (rs.next()) {
+                jsonObject = JSON.parseObject(rs.getString(1));
+                JSONArray usersList = jsonObject.getJSONArray("like_users");
+                if (!usersList.contains(userId)) {
+                    usersList.add(userId);
+                    jsonObject.put("total", jsonObject.getInteger("total") + 1);
+                }
+                jsonObject.put("like_users", usersList);
+            }
+
+            sql = "UPDATE music SET likes = ? WHERE id = ?";
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, jsonObject.toJSONString());
+            ps.setString(2, musicId);
+
+            ps.executeUpdate();
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DataBaseUtils.close(conn, ps, rs);
+        }
     }
 
 
