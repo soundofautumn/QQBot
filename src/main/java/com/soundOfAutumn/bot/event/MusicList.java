@@ -47,31 +47,30 @@ public class MusicList {
         return mcb.asMessageChain();
     }
 
-    public synchronized static MessageChain getIntroduce(String id) {
+    public synchronized static MessageChain getIntroduce(String musicId) {
         MessageChainBuilder mcb = new MessageChainBuilder();
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
             conn = DataBaseUtils.getConnection();
-            String sql = "SELECT introduce FROM music WHERE id = ?";
+            String sql = "SELECT introduce FROM music WHERE id = ? ";
             ps = conn.prepareStatement(sql);
-            ps.setString(1, id);
+            ps.setString(1, musicId);
             rs = ps.executeQuery();
-            while (rs.next()) {
+
+            if (rs.next()) {
                 mcb.append(new PlainText(rs.getString(1)));
             }
 
 
         } catch (SQLException e) {
             e.printStackTrace();
-            return mcb.append("未查询到此歌曲").asMessageChain();
+            mcb.append("未查询到此歌曲");
 
         } finally {
             DataBaseUtils.close(conn, ps, rs);
         }
-        mcb.append("");
-
 
         return mcb.asMessageChain();
     }
@@ -79,18 +78,23 @@ public class MusicList {
     public synchronized static String getBrief() {
         StringBuffer sb = new StringBuffer();
         Formatter formatter = new Formatter(sb, Locale.CHINA);
+
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
+
         try {
             conn = DataBaseUtils.getConnection();
             String sql = "SELECT id, music_name, music_singer FROM music";
             ps = conn.prepareStatement(sql);
             rs = ps.executeQuery();
             while (rs.next()) {
-                formatter.format("%s.歌曲名称:%s 歌手名称:%s\n", rs.getString(1), rs.getString(2), rs.getString(3));
+                formatter.format("%s.歌曲名称:%s 歌手名称:%s\n",
+                        rs.getString(1),
+                        rs.getString(2),
+                        rs.getString(3)
+                );
             }
-
 
         } catch (SQLException e) {
             e.printStackTrace();

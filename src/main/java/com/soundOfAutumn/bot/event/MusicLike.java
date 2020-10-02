@@ -65,23 +65,19 @@ public class MusicLike {
             ps.setString(1, musicId);
 
             rs = ps.executeQuery();
-            JSONObject jsonObject = null;
             if (rs.next()) {
-                jsonObject = JSON.parseObject(rs.getString(1));
+
+                JSONObject jsonObject = JSON.parseObject(rs.getString(1));
                 JSONArray usersList = jsonObject.getJSONArray("like_users");
+
                 if (!usersList.contains(userId)) {
                     usersList.add(userId);
                     jsonObject.put("total", jsonObject.getInteger("total") + 1);
                 }
+
                 jsonObject.put("like_users", usersList);
+                jsonUpdate(jsonObject, musicId);
             }
-
-            sql = "UPDATE music SET likes = ? WHERE id = ?";
-            ps = conn.prepareStatement(sql);
-            ps.setString(1, jsonObject.toJSONString());
-            ps.setString(2, musicId);
-
-            ps.executeUpdate();
 
 
         } catch (SQLException e) {
@@ -93,7 +89,7 @@ public class MusicLike {
 
 
     public synchronized static MessageChain giveLike(String musicId, long qq) {
-        long userId = AccountUtils.qqToUserId(qq);
+        long userId = AccountUtils.qq2UserId(qq);
 
         MessageChainBuilder mcb = new MessageChainBuilder();
         if (isLiked(musicId, userId)) {
@@ -103,8 +99,25 @@ public class MusicLike {
             mcb.append("点赞成功");
         }
 
-
         return mcb.asMessageChain();
     }
 
+    private static void jsonUpdate(JSONObject jsonObject, String musicId) {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        try {
+            conn = DataBaseUtils.getConnection();
+            String sql = "UPDATE music SET likes = ? WHERE id = ?";
+            ps = conn.prepareStatement(sql);
+
+            ps.setString(1, jsonObject.toJSONString());
+            ps.setString(2, musicId);
+
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DataBaseUtils.close(conn, ps);
+        }
+    }
 }

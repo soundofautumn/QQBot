@@ -13,6 +13,12 @@ public class AccountUtils {
     private AccountUtils() {
 
     }
+
+    /**
+     * 判断一个账号是否绑定
+     * @param qq QQ号码
+     * @return 是否绑定
+     */
     public synchronized static boolean isBind(long qq) {
         Connection conn = null;
         PreparedStatement ps = null;
@@ -34,11 +40,17 @@ public class AccountUtils {
         }
     }
 
-    public synchronized static long qqToUserId(long qq) {
+    /**
+     * 将QQ号码转为用户的Id
+     * @param qq QQ号码
+     * @return 用户Id
+     */
+    public synchronized static long qq2UserId(long qq) {
 
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
+
         try {
             conn = DataBaseUtils.getConnection();
             String sql = "SELECT id FROM users WHERE qq = ?";

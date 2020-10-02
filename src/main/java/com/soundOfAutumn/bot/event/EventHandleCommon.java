@@ -40,13 +40,11 @@ public class EventHandleCommon extends SimpleListenerHost {
         String msgString = event.getMessage().contentToString();
 
         //判断接收到的信息
-        //判断是否发送的是绑定命令
         switch (msgString) {
 
             case "点歌":
                 if (!AccountUtils.isBind(event.getSender().getId())) {
                     event.getSubject().sendMessage("QQ号未绑定,请先绑定");
-                    return ListeningStatus.LISTENING;
                 }
                 //发送提示
                 event.getSubject().sendMessage("请发送歌曲介绍和歌曲链接,介绍输入格式为 \"介绍:xxx\" ,最后输入 \"上传\" 来确认");
@@ -54,8 +52,9 @@ public class EventHandleCommon extends SimpleListenerHost {
 
                 //注册新事件
                 Events.registerEvents(bot, new MusicUpLoad(event.getSender().getId()));
-                //判断是否发送的绑定命令
+
                 break;
+
             case "绑定":
                 //判断是否已经绑定
                 if (AccountUtils.isBind(event.getSender().getId())) {
@@ -76,12 +75,17 @@ public class EventHandleCommon extends SimpleListenerHost {
 
             default:
                 if (msgString.contains("显示歌曲详细信息") && msgString.contains(":")) {
-                    String s = msgString.split(":")[1];
-                    event.getSubject().sendMessage(MusicList.getIntroduce(s));
-                    event.getSubject().sendMessage(MusicList.getMusicShare(s));
+
+                    String musicId = msgString.split(":")[1];
+
+                    event.getSubject().sendMessage(MusicList.getIntroduce(musicId));
+                    event.getSubject().sendMessage(MusicList.getMusicShare(musicId));
+
                 } else if (msgString.contains("点赞") && msgString.contains(":")) {
+
                     String musicId = msgString.split(":")[1];
                     event.getSubject().sendMessage(MusicLike.giveLike(musicId, event.getSender().getId()));
+
                 } else {
                     event.getSubject().sendMessage("现支持的命令如下:\n" +
                             "1. \"点歌\" :进行上传歌曲等操作\n" +

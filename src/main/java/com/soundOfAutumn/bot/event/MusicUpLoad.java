@@ -27,16 +27,16 @@ public class MusicUpLoad extends CanBeQuit {
     private String introduce;
     private String musicName;
     private String musicSinger;
-    private final long QQId;
+    private final long qqId;
 
-    public MusicUpLoad(long id) {
-        QQId = id;
+    public MusicUpLoad(long qqId) {
+        this.qqId = qqId;
     }
 
 
     @EventHandler(concurrency = Listener.ConcurrencyKind.LOCKED, priority = Listener.EventPriority.HIGH)
     public ListeningStatus update(MessageEvent updateEvent) {
-        if (updateEvent.getSender().getId() != QQId) {
+        if (updateEvent.getSender().getId() != qqId) {
             return ListeningStatus.LISTENING;
         }
 
@@ -58,14 +58,15 @@ public class MusicUpLoad extends CanBeQuit {
         try {
             conn = DataBaseUtils.getConnection();
             //sql语句
-            String sql = "INSERT INTO music (music_name,music_singer,introduce,music_share,likes) VALUES (?,?,?,?,?)";
+            String sql = "INSERT INTO music (music_name, music_singer, introduce, music_share, likes) VALUES (?, ?, ?, ?, ?)";
             ps = conn.prepareStatement(sql);
 
             ps.setString(1, musicName);
             ps.setString(2, musicSinger);
             ps.setString(3, introduce);
-            ps.setString(4, musicShare.toString());
-            ps.setString(5,"{\"total\":0,\"like_users\":[]}");
+            ps.setString(4, musicShare.toJSONString());
+            //默认的json
+            ps.setString(5, "{\"total\":0,\"like_users\":[]}");
 
             ps.executeUpdate();
             //上传成功
@@ -84,7 +85,7 @@ public class MusicUpLoad extends CanBeQuit {
 
     @EventHandler(priority = Listener.EventPriority.HIGH)
     public ListeningStatus onMusicShare(MessageEvent shareEvent) {
-        if (shareEvent.getSender().getId() != QQId) {
+        if (shareEvent.getSender().getId() != qqId) {
             return ListeningStatus.LISTENING;
         }
 
@@ -95,10 +96,16 @@ public class MusicUpLoad extends CanBeQuit {
             musicShare = JSONObject.parseObject(shareEvent.getMessage().get(1).contentToString());
             //获取歌名和歌手
             JSONObject music = null;
+            //接收到的歌曲有两种形式的json
+            //一种需要VIP,一种不需要,两种json的结构不一样
             if (musicShare.getJSONObject("meta").containsKey("news")) {
                 music = musicShare.getJSONObject("meta").getJSONObject("news");
             } else if (musicShare.getJSONObject("meta").containsKey("music")) {
                 music = musicShare.getJSONObject("meta").getJSONObject("music");
+            } else {
+                //若都不匹配
+                shareEvent.getSubject().sendMessage("警告!错误的分享链接!");
+                return ListeningStatus.LISTENING;
             }
 
             musicName = music.getString("title");
@@ -114,7 +121,7 @@ public class MusicUpLoad extends CanBeQuit {
     @EventHandler(priority = Listener.EventPriority.HIGH)
     public ListeningStatus uploadMusic(MessageEvent musicEvent) {
 
-        if (musicEvent.getSender().getId() != QQId) {
+        if (musicEvent.getSender().getId() != qqId) {
             return ListeningStatus.LISTENING;
         }
         //介绍输入格式为 介绍:xxx
