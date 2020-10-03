@@ -18,7 +18,7 @@ import java.sql.SQLException;
  */
 public class MusicLike {
 
-    private synchronized static boolean isLiked(String musicId, long userId) {
+    private synchronized static boolean isLiked(long musicId, long userId) {
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -27,7 +27,7 @@ public class MusicLike {
             conn = DataBaseUtils.getConnection();
             String sql = "SELECT likes FROM music WHERE id = ?";
             ps = conn.prepareStatement(sql);
-            ps.setString(1, musicId);
+            ps.setLong(1, musicId);
 
             rs = ps.executeQuery();
 
@@ -53,7 +53,7 @@ public class MusicLike {
         return false;
     }
 
-    private synchronized static void newLike(String musicId, long userId) {
+    private synchronized static void newLike(long musicId, long userId) {
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -62,7 +62,7 @@ public class MusicLike {
             conn = DataBaseUtils.getConnection();
             String sql = "SELECT likes FROM music WHERE id = ?";
             ps = conn.prepareStatement(sql);
-            ps.setString(1, musicId);
+            ps.setLong(1, musicId);
 
             rs = ps.executeQuery();
             if (rs.next()) {
@@ -88,7 +88,7 @@ public class MusicLike {
     }
 
 
-    public synchronized static MessageChain giveLike(String musicId, long qq) {
+    public synchronized static MessageChain giveLike(long musicId, long qq) {
         long userId = AccountUtils.qq2UserId(qq);
 
         MessageChainBuilder mcb = new MessageChainBuilder();
@@ -102,7 +102,7 @@ public class MusicLike {
         return mcb.asMessageChain();
     }
 
-    private static void jsonUpdate(JSONObject jsonObject, String musicId) {
+    private static void jsonUpdate(JSONObject jsonObject, long musicId) {
         Connection conn = null;
         PreparedStatement ps = null;
         try {
@@ -111,7 +111,7 @@ public class MusicLike {
             ps = conn.prepareStatement(sql);
 
             ps.setString(1, jsonObject.toJSONString());
-            ps.setString(2, musicId);
+            ps.setLong(2, musicId);
 
             ps.executeUpdate();
         } catch (SQLException e) {

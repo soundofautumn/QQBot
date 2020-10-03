@@ -10,6 +10,9 @@ import net.mamoe.mirai.event.SimpleListenerHost;
 import net.mamoe.mirai.message.MessageEvent;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Arrays;
+import java.util.regex.Pattern;
+
 /**
  * 处理主要事件
  *
@@ -18,6 +21,8 @@ import org.jetbrains.annotations.NotNull;
 public class EventHandleCommon extends SimpleListenerHost {
 
     private final Bot bot;
+    private final static Pattern PATTERN = Pattern.compile("[^0-9]+");
+
 
     /**
      * 构造方法
@@ -78,20 +83,24 @@ public class EventHandleCommon extends SimpleListenerHost {
                         "1. \"点歌\" :进行上传歌曲等操作\n" +
                         "2. \"绑定\" :进行QQ号与学号的绑定(如需解绑,请联系管理员)\n" +
                         "3. \"显示歌曲列表\" :显示简要的歌曲信息" +
-                        "4. \"显示歌曲详细信息:X\" :X为歌曲序号,显示歌曲的简介和分享链接" +
-                        "5. \"点赞某首歌曲:X \" :X为歌曲序号,点赞某首歌曲");
+                        "4. \"显示歌曲详细信息 X\" :X为歌曲序号,显示歌曲的简介和分享链接" +
+                        "5. \"点赞某首歌曲 X \" :X为歌曲序号,点赞某首歌曲");
                 break;
             default:
-                if (msgString.contains("显示歌曲详细信息") && msgString.contains(":")) {
+                if (msgString.contains("显示歌曲详细信息")) {
 
-                    String musicId = msgString.split(":")[1];
+                    long musicId = getNumber(msgString);
 
                     event.getSubject().sendMessage(MusicList.getIntroduce(musicId));
                     event.getSubject().sendMessage(MusicList.getMusicShare(musicId));
 
-                } else if (msgString.contains("点赞") && msgString.contains(":")) {
+                } else if (msgString.contains("点赞")) {
+                    if (!AccountUtils.isBind(event.getSender().getId())) {
+                        event.getSubject().sendMessage("QQ号未绑定,请先绑定");
+                    }
 
-                    String musicId = msgString.split(":")[1];
+                    long musicId = getNumber(msgString);
+
                     event.getSubject().sendMessage(MusicLike.giveLike(musicId, event.getSender().getId()));
 
                 }
@@ -104,5 +113,12 @@ public class EventHandleCommon extends SimpleListenerHost {
     @Override
     public void handleException(@NotNull CoroutineContext context, @NotNull Throwable exception) {
         throw new RuntimeException("在事件处理过程中出现异常", exception);
+    }
+
+    private static long getNumber(String s) {
+
+        String[] cs = PATTERN.split(s);
+        return Long.parseLong(Arrays.toString(cs));
+
     }
 }

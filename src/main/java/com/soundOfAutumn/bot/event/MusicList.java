@@ -18,7 +18,7 @@ import java.util.Locale;
  */
 public class MusicList {
 
-    public synchronized static MessageChain getMusicShare(String id) {
+    public synchronized static MessageChain getMusicShare(long id) {
         MessageChainBuilder mcb = new MessageChainBuilder();
         Connection conn = null;
         PreparedStatement ps = null;
@@ -27,7 +27,7 @@ public class MusicList {
             conn = DataBaseUtils.getConnection();
             String sql = "SELECT music_share FROM music WHERE id = ?";
             ps = conn.prepareStatement(sql);
-            ps.setString(1, id);
+            ps.setLong(1, id);
             rs = ps.executeQuery();
             while (rs.next()) {
                 mcb.append(new LightApp(rs.getString(1)));
@@ -47,7 +47,7 @@ public class MusicList {
         return mcb.asMessageChain();
     }
 
-    public synchronized static MessageChain getIntroduce(String musicId) {
+    public synchronized static MessageChain getIntroduce(long musicId) {
         MessageChainBuilder mcb = new MessageChainBuilder();
         Connection conn = null;
         PreparedStatement ps = null;
@@ -56,7 +56,7 @@ public class MusicList {
             conn = DataBaseUtils.getConnection();
             String sql = "SELECT introduce FROM music WHERE id = ? ";
             ps = conn.prepareStatement(sql);
-            ps.setString(1, musicId);
+            ps.setLong(1, musicId);
             rs = ps.executeQuery();
 
             if (rs.next()) {
