@@ -101,7 +101,9 @@ public class MusicList {
         } finally {
             DataBaseUtils.close(conn, ps, rs);
         }
-
+        if ("".equals(sb.toString())) {
+            return sb.append("未查询到歌曲").toString();
+        }
         return sb.toString();
     }
 

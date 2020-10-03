@@ -10,7 +10,7 @@ import net.mamoe.mirai.event.SimpleListenerHost;
 import net.mamoe.mirai.message.MessageEvent;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Arrays;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -50,6 +50,7 @@ public class EventHandleCommon extends SimpleListenerHost {
             case "点歌":
                 if (!AccountUtils.isBind(event.getSender().getId())) {
                     event.getSubject().sendMessage("QQ号未绑定,请先绑定");
+                    return ListeningStatus.LISTENING;
                 }
                 //发送提示
                 event.getSubject().sendMessage("请发送歌曲介绍和歌曲链接,介绍输入格式为 \"介绍:xxx\" ,最后输入 \"上传\" 来确认");
@@ -82,9 +83,9 @@ public class EventHandleCommon extends SimpleListenerHost {
                 event.getSubject().sendMessage("现支持的命令如下:\n" +
                         "1. \"点歌\" :进行上传歌曲等操作\n" +
                         "2. \"绑定\" :进行QQ号与学号的绑定(如需解绑,请联系管理员)\n" +
-                        "3. \"显示歌曲列表\" :显示简要的歌曲信息" +
-                        "4. \"显示歌曲详细信息 X\" :X为歌曲序号,显示歌曲的简介和分享链接" +
-                        "5. \"点赞某首歌曲 X \" :X为歌曲序号,点赞某首歌曲");
+                        "3. \"显示歌曲列表\" :显示简要的歌曲信息\n" +
+                        "4. \"显示歌曲详细信息 X\" :X为歌曲序号,显示歌曲的简介和分享链接\n" +
+                        "5. \"点赞 X \" :X为歌曲序号,点赞某首歌曲\n");
                 break;
             default:
                 if (msgString.contains("显示歌曲详细信息")) {
@@ -97,6 +98,7 @@ public class EventHandleCommon extends SimpleListenerHost {
                 } else if (msgString.contains("点赞")) {
                     if (!AccountUtils.isBind(event.getSender().getId())) {
                         event.getSubject().sendMessage("QQ号未绑定,请先绑定");
+                        return ListeningStatus.LISTENING;
                     }
 
                     long musicId = getNumber(msgString);
@@ -115,10 +117,11 @@ public class EventHandleCommon extends SimpleListenerHost {
         throw new RuntimeException("在事件处理过程中出现异常", exception);
     }
 
-    private static long getNumber(String s) {
+    public static long getNumber(String s) {
 
-        String[] cs = PATTERN.split(s);
-        return Long.parseLong(Arrays.toString(cs));
+        Matcher matcher = PATTERN.matcher(s);
+
+        return Long.parseLong(matcher.replaceAll("").trim());
 
     }
 }
