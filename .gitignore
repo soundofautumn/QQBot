@@ -6,3 +6,4 @@ img
 *.iml
 *.json
 .settings
+dependency-reduced-pom.xml
