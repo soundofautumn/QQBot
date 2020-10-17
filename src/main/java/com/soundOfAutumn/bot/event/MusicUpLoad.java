@@ -6,6 +6,7 @@ import kotlin.coroutines.CoroutineContext;
 import net.mamoe.mirai.event.EventHandler;
 import net.mamoe.mirai.event.Listener;
 import net.mamoe.mirai.event.ListeningStatus;
+import net.mamoe.mirai.event.SimpleListenerHost;
 import net.mamoe.mirai.message.MessageEvent;
 import net.mamoe.mirai.message.data.LightApp;
 import org.jetbrains.annotations.NotNull;
@@ -16,7 +17,7 @@ import java.sql.PreparedStatement;
 /**
  * @author SoundOfAutumn
  */
-public class MusicUpLoad extends CanBeQuit {
+public class MusicUpLoad extends SimpleListenerHost {
     /**
      * 储存音乐的分享链接
      */
