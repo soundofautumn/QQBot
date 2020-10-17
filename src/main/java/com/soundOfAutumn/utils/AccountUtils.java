@@ -45,7 +45,7 @@ public class AccountUtils {
      * @param qq QQ号码
      * @return 用户Id
      */
-    public synchronized static long qq2UserId(long qq) {
+    public synchronized static int qq2UserId(long qq) {
 
         Connection conn = null;
         PreparedStatement ps = null;
@@ -58,7 +58,7 @@ public class AccountUtils {
             ps.setLong(1, qq);
             rs = ps.executeQuery();
             if (rs.next()) {
-                return rs.getLong(1);
+                return rs.getInt(1);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -66,7 +66,7 @@ public class AccountUtils {
             DataBaseUtils.close(conn, ps, rs);
         }
 
-        return -1L;
+        return -1;
     }
 
 }

@@ -1,5 +1,6 @@
 package com.soundOfAutumn.bot.event;
 
+import com.alibaba.fastjson.JSONObject;
 import com.soundOfAutumn.utils.DataBaseUtils;
 import net.mamoe.mirai.message.data.LightApp;
 import net.mamoe.mirai.message.data.MessageChain;
@@ -85,14 +86,16 @@ public class MusicList {
 
         try {
             conn = DataBaseUtils.getConnection();
-            String sql = "SELECT id, music_name, music_singer FROM music";
+            String sql = "SELECT id, music_name, music_singer, likes FROM music";
             ps = conn.prepareStatement(sql);
             rs = ps.executeQuery();
             while (rs.next()) {
-                formatter.format("%s.歌曲名称:%s 歌手名称:%s\n",
+                formatter.format("%s.歌曲名称:%s 歌手名称:%s 点赞人数:%d\n",
                         rs.getString(1),
                         rs.getString(2),
-                        rs.getString(3)
+                        rs.getString(3),
+                        JSONObject.parseObject(rs.getString(4)).getJSONArray("like_users").size()
+
                 );
             }
 
